@@ -117,6 +117,18 @@ test('Skips package.json with no "babel" hash in it', (t) => {
     t.end();
 });
 
+test('Should send extra configuration to node resolver', (t) => {
+    const expected = { found: true, path: relativeToTestDir('modules/component.jsx') };
+    const actual = resolve('@/component', __filename, {
+        extensions: ['.jsx'],
+        rootPathSuffix: 'modules',
+        rootPathPrefix: '@'
+    });
+
+    t.deepEqual(actual, expected);
+    t.end();
+});
+
 test('Does nothing when babel plugin not listed in .babelrc', (t) => {
     const result = resolve('~/modules/file', __filename, {}, '.babelrcNotListed');
     const expected = expectResolvedTo(false);

@@ -1,6 +1,6 @@
 {
   "name": "eslint-import-resolver-babel-plugin-root-import",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "src/index.js",
   "description": "fork of eslint-import-resolver-babel-root-import that works",
   "repository": {
@@ -21,6 +21,11 @@
     {
       "name": "Christian Le",
       "url": "http://christianle.com"
+    },
+    {
+      "name": "Héctor Menéndez",
+      "email": "hector@gik.mx",
+      "url": "http://gik.mx"
     }
   ],
   "license": "MIT",
