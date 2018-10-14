@@ -87,14 +87,17 @@ exports.resolve = (source, file, config = {}, babelrc = '.babelrc') => {
 
     const rootPathConfig = optsArray.map((item = {}) => ({
         rootPathPrefix: isString(item.rootPathPrefix) ? item.rootPathPrefix : '~',
-        rootPathSuffix: isString(item.rootPathSuffix) ? item.rootPathSuffix.replace(/^(\/)|(\/)$/g, '') : ''
+        rootPathSuffix: isString(item.rootPathSuffix) ? item.rootPathSuffix.replace(/^(\/)|(\/)$/g, '') : '',
+        ...item,
     }));
 
     let transformedSource = source;
+    let resolverConfig = {};
     for (let i = 0; i < rootPathConfig.length; i += 1) {
-        const option = rootPathConfig[i];
-        const prefix = option.rootPathPrefix;
-        const suffix = option.rootPathSuffix;
+        // The remaining configs will be sent to node.resolver to deal with special cases.
+        // eg. Adding .jsx to the extension list.
+        const { rootPathPrefix: prefix, rootPathSuffix: suffix, ...option } = rootPathConfig[i];
+        resolverConfig = option;
 
         if (hasRootPathPrefixInString(source, prefix)) {
             transformedSource = transformRelativeToRootPath(source, suffix, prefix);
@@ -104,7 +107,6 @@ exports.resolve = (source, file, config = {}, babelrc = '.babelrc') => {
             break;
         }
     }
-
-    return nodeResolve(transformedSource, file, {});
+    return nodeResolve(transformedSource, file, resolverConfig);
 };
 
